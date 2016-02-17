@@ -1,0 +1,149 @@
+*vim-diffa.txt*				Improve diff relatad behaviour in Vim
+
+Version: 0.1.0
+Author:  Alisue <lambdalisue@hashnote.net>	*vim-diffa-author*
+Support: Vim 7.3 and above
+License: MIT license  {{{
+	Copyright (c) 2015 Alisue, hashnote.net
+
+	Permission is hereby granted, free of charge, to any person obtaining
+	a copy of this software and associated documentation files
+	(the "Software"), to deal in the Software without restriction,
+	including without limitation the rights to use, copy, modify, merge,
+	publish, distribute, sublicense, and/or sell copies of the Software,
+	and to permit persons to whom the Software is furnished to do so,
+	subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+	CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+	TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+=============================================================================
+CONTENTS					*vim-diffa-contents*
+
+Introduction		|vim-diffa-introduction|
+Install			|vim-diffa-install|
+Usage			|vim-diffa-usage|
+Interface		|vim-diffa-interface|
+  Options		|vim-diffa-interface-options|
+  Mappings		|vim-diffa-interface-mappings|
+  Functions		|vim-diffa-interface-functions|
+  Commands		|vim-diffa-interface-commands|
+
+
+=============================================================================
+INTRODUCTION					*vim-diffa-introduction*
+
+*vim-diffa* is a plugin to improve diff related behaviour in Vim.
+It provides the following features:
+
+- Unified diff in |diffexpr| (e.g. git --no-index --histogram)
+- Automatic |diffupdate| (diffupdate when user leave an insert mode)
+- Automatic |diffoff| (diffoff when the buffer is hidden/closed)
+- Improved |:DiffOrig| command
+
+This plugin is an alternative of the followings
+
+- vim-unified-diff: https://github.com/lambdalisue/vim-unified-diff
+- vim-improve-diff: https://github.com/lambdalisue/vim-improve-diff
+
+
+=============================================================================
+INSTALL						*vim-diffa-install*
+
+Use Plug.vim, neobundle.vim, or whatever like:
+>
+	" Plug.vim
+	Plug 'lambdalisue/vim-diffa'
+
+	" neobundle.vim
+	NeoBundle 'lambdalisue/vim-diffa'
+<
+=============================================================================
+INTERFACE					*vim-diffa-interface*
+
+-----------------------------------------------------------------------------
+Options					*vim-diffa-interface-options*
+
+					*g:diffa_enable*
+g:diffa_enable					(Default: 1)
+
+	Enable diffa on startup time. Otherwise users require to call
+	|diffa#enable()| manually to enable like:
+>
+	call diffa#enable()
+<
+	See |g:diffa#enable_auto_diffupdate| and |g:diffa#enable_auto_diffoff|
+	what kind of behaviour will be enabled.
+
+					*g:diffa_enable_diffexpr*
+g:diffa_enable_diffexpr				(Default: 1)
+
+	Assign |diffexpr| on startup time. Otherwise users require to assign
+	|diffexpr| as themselves like:
+>
+	set diffexpr=diffa#unified#diffexpr()
+<
+	Note that it will not assign |diffexpr| when
+	|g:diffa#unified#executable| is not executable.
+
+					*g:diffa_enable_DiffOrig*
+g:diffa_enable_DiffOrig				(Default: 1)
+
+	Define |:DiffOrig| command to overwrite the default one. Otherwise
+	users require to define a command themselves like:
+>
+	command! DiffOrig call diffa#difforig()
+<
+					*g:diffa#enable_auto_diffupdate*
+g:diffa#enable_auto_diffupdate			(Default: 1)
+
+	Enable auto |diffupdate| when user leave insert mode. Note that users
+	need to call |diffa#enable()| again to see the effect.
+
+					*g:diffa#enable_auto_diffoff*
+g:diffa#enable_auto_diffoff			(Default: 1)
+
+	Enable auto |diffoff| when the buffer leave the window and there is
+	no window of the buffer which is in diff mode in the current tabpage.
+	Note that users need to call |diffa#enable()| again to see the effect.
+
+					*g:diffa#unified#executable*
+g:diffa#unified#executable			(Default: "git")
+
+	An executable path of diff program which return unified diff.
+	Note that if the program can provide normal diff, you don't need to
+	use vim-diffa as a proxy and directly specify the program into
+	|diffexpr|.
+
+					*g:diffa#unified#arguments*
+g:diffa#unified#arguments			(Default: See below)
+
+	An arguments list for the executable. The default value is
+>
+	let g:diffa#unified#arguments = [
+	    \ 'diff', '--no-index', '--histogram',
+	    \ '--no-color', '--no-ext-diff', '--unified=0',
+	    \]
+<
+					*g:diffa#unified#iwhite_arguments*
+g:diffa#unified#iwhite_arguments		(Default: See below)
+
+	An extra arguments list for the executable when 'iwhite' is in
+	|diffopt|. The default value is
+>
+	let g:diffa#unified#iwhite_arguments = [
+	    \ '--ignore-all-space',
+	    \]
+<
+
+=============================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl:noet
