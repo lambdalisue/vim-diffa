@@ -9,8 +9,10 @@ if get(g:, 'diffa_enable', 1)
   call diffa#enable()
 endif
 if get(g:, 'diffa_enable_diffexpr', 1)
-  if diffa#unified#is_available()
+  if has('vim_starting')
     set diffexpr=diffa#unified#diffexpr()
+  else
+    setglobal diffexpr=diffa#unified#diffexpr()
   endif
 endif
 if get(g:, 'diffa_enable_DiffOrig', 1)
