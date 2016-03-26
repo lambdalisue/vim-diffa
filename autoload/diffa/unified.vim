@@ -33,6 +33,7 @@ function! s:parse_unified_region(line) abort
   endif
   return join([m[0], send, a, m[2], dend], '')
 endfunction
+
 function! s:parse_unified(unified) abort
   let _normal = []
   for line in a:unified
@@ -51,6 +52,7 @@ function! s:parse_unified(unified) abort
   endfor
   return _normal
 endfunction
+
 function! s:parse_unified_python(unified, options) abort
   let python = a:options.python == 1 ? 0 : a:options.python
   execute s:Python.exec_file(s:Path.join(s:script_root, 'unified.py'), python)
