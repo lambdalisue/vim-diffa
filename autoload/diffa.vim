@@ -28,12 +28,13 @@ function! s:on_BufEnter() abort
     silent! unlet t:_diffa_on_BufLeave
   endtry
 endfunction
+
 function! s:on_BufLeave() abort
   if &diff
     let t:_diffa_on_BufLeave = {}
     let t:_diffa_on_BufLeave.nwin = winnr('$')
     let t:_diffa_on_BufLeave.bufnum = bufnr('%')
-  else
+  elseif exists('t:_diffa_on_BufLeave')
     silent! unlet t:_diffa_on_BufLeave
   endif
 endfunction
