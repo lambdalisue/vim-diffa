@@ -68,12 +68,12 @@ function! diffa#difforig() abort
   let bufnum = bufnr('%')
   noautocmd execute printf('keepjumps new ORIG:%s', fname)
   keepjumps r # | keepjumps normal! 1Gdd
-  execute printf('filetype %s', ftype)
+  execute printf('setlocal filetype=%s', ftype)
   setlocal buftype=nofile noswapfile nobuflisted bufhidden=wipe
   setlocal nomodifiable
-  call diffa#diffthis()
+  diffthis
   execute printf('%swincmd w', bufwinnr(bufnum))
-  call diffa#diffthis()
+  diffthis
 endfunction
 
 function! diffa#define_variables(prefix, defaults) abort
